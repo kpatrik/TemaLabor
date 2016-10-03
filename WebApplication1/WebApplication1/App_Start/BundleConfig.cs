@@ -7,7 +7,7 @@ namespace WebApplication1
     {
         //jo lenne ha müssssssss
         // hello
-        //hello megint
+        //hello meg
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
