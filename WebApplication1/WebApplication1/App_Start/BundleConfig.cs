@@ -10,6 +10,7 @@ namespace WebApplication1
         //ló kacsa
         //látod???
         //ja
+        // proba 2
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
