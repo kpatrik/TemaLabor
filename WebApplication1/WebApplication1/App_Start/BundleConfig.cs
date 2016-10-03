@@ -11,6 +11,7 @@ namespace WebApplication1
         //látod???
         //ja
         // proba 2
+        //Mócaz egy pénisz
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
