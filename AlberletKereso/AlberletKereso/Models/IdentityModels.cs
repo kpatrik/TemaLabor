@@ -13,6 +13,10 @@ namespace AlberletKereso.Models
 
         public ICollection<Alberlet> Hirdetesek { get; set; }
 
+        public ApplicationUser() : base() {
+            Hirdetesek = new List<Alberlet>();
+        }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
@@ -39,4 +43,5 @@ namespace AlberletKereso.Models
         }
     
     }
+
 }
