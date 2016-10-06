@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,9 +11,23 @@ namespace AlberletKereso.Models
 {
     public class Alberlet
     {
+
         public Alberlet() { }
 
+        public Alberlet(string cim, int szobak, int emelet, int mosdok,int alap, int ar, bool berendezett, ApplicationUser user) {
+            Cim = cim;
+            Szobak_szama = szobak;
+            Emelet = emelet;
+            Mosdok_szama = mosdok;
+            Alapterulet = alap;
+            Ar = ar;
+            Berendezett = berendezett;
+            Hirdeto = user;
 
+        }
+
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AlberletId { get; set; }
 
         [Required]
