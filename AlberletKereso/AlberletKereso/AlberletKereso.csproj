@@ -196,14 +196,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AlberletsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\SajatAlberletekController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Alberlet.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\Kep.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -269,9 +272,17 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Manage\UjAlberlet.cshtml" />
+    <Content Include="Views\Alberlets\Create.cshtml" />
+    <Content Include="Views\Alberlets\Details.cshtml" />
+    <Content Include="Views\Alberlets\Index.cshtml" />
+    <Content Include="Views\SajatAlberletek\Create.cshtml" />
+    <Content Include="Views\SajatAlberletek\Delete.cshtml" />
+    <Content Include="Views\SajatAlberletek\Details.cshtml" />
+    <Content Include="Views\SajatAlberletek\Edit.cshtml" />
+    <Content Include="Views\SajatAlberletek\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="App_Data\Kepek\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

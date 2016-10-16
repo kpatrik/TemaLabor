@@ -11,6 +11,7 @@ namespace AlberletKereso.Models
 {
     public class Alberlet
     {
+        public ICollection<Kep> Kepek { get; set; }
 
         public Alberlet() { }
 
@@ -23,6 +24,7 @@ namespace AlberletKereso.Models
             Ar = ar;
             Berendezett = berendezett;
             Hirdeto = user;
+            Kepek = new List<Kep>();
 
         }
 
