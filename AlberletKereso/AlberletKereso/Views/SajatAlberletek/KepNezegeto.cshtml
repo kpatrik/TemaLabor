@@ -1,0 +1,18 @@
+﻿@model IEnumerable<AlberletKereso.Models.Kep>
+
+@{
+    ViewBag.Title = "KepNezegeto";
+}
+
+<h2>KepNezegeto</h2>
+
+@foreach (var item in Model)
+{
+
+    <tr>
+        <td>
+            <img src="~/Uploads/@item.FileName"/>
+ 
+        </td>
+    </tr>
+}

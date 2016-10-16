@@ -41,7 +41,8 @@ namespace AlberletKereso.Models
         {
             return new ApplicationDbContext();
         }
-    
+
+        public System.Data.Entity.DbSet<AlberletKereso.Models.Kep> Keps { get; set; }
     }
 
 }

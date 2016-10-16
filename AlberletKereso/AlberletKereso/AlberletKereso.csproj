@@ -237,6 +237,8 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Uploads\14089248_1349185851778158_1991564359014595085_n.jpg" />
+    <Content Include="Uploads\closer.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -271,7 +273,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Manage\UjAlberlet.cshtml" />
     <Content Include="Views\Alberlets\Create.cshtml" />
     <Content Include="Views\Alberlets\Details.cshtml" />
     <Content Include="Views\Alberlets\Index.cshtml" />
@@ -280,9 +281,14 @@
     <Content Include="Views\SajatAlberletek\Details.cshtml" />
     <Content Include="Views\SajatAlberletek\Edit.cshtml" />
     <Content Include="Views\SajatAlberletek\Index.cshtml" />
+    <Content Include="Views\SajatAlberletek\KepHozzaadas.cshtml" />
+    <Content Include="Views\SajatAlberletek\KepNezegeto.cshtml" />
+    <Content Include="Views\Alberlets\KepNezegeto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Kepek\" />
+    <Folder Include="Views\Image\" />
+    <Folder Include="Views\Keps\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

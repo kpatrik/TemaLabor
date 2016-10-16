@@ -11,9 +11,12 @@ namespace AlberletKereso.Models
 {
     public class Alberlet
     {
+        [Display(Name = "Képek")]
         public ICollection<Kep> Kepek { get; set; }
 
-        public Alberlet() { }
+        public Alberlet() {
+            Kepek = new List<Kep>();
+        }
 
         public Alberlet(string cim, int szobak, int emelet, int mosdok,int alap, int ar, bool berendezett, ApplicationUser user) {
             Cim = cim;

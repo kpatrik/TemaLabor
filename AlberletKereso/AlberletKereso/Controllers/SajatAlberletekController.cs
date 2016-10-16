@@ -10,6 +10,8 @@ using AlberletKereso.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.Security;
+using System.Threading.Tasks;
+using System.IO;
 
 namespace AlberletKereso.Controllers
 {
@@ -41,6 +43,64 @@ namespace AlberletKereso.Controllers
             return View(alberletek.ToList());
         }
 
+        public ActionResult KepNezegeto(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Alberlet alberlet = db.Alberletek.Find(id);
+            if (alberlet == null)
+            {
+                return HttpNotFound();
+            }
+            var Kepek = from k in db.Keps
+                        where k.Alberlet.AlberletId == id
+                        select k;
+
+            return View(Kepek.ToList());
+
+        }
+
+        public ActionResult KepHozzaadas()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult KepHozzaadas(int? id)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var file = Request.Files[0];
+
+                if (id == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+                Alberlet alberlet = db.Alberletek.Find(id);
+
+                
+                if (alberlet == null)
+                {
+                    return HttpNotFound();
+                }
+
+                if (file != null && file.ContentLength > 0)
+                {
+                    var fileName = Path.GetFileName(file.FileName);
+                    var path = Path.Combine(HttpContext.Server.MapPath("~/Uploads/"), fileName);
+                    file.SaveAs(path);
+                    Kep kep = new Kep(path, fileName, alberlet);
+                    alberlet.Kepek.Add(kep);
+                    db.SaveChanges();
+                }
+
+            }
+
+            return View();
+        }
+
         // GET: SajatAlberletek/Details/5
         public ActionResult Details(int? id)
         {
@@ -67,16 +127,21 @@ namespace AlberletKereso.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "AlberletId,Cim,Szobak_szama,Emelet,Mosdok_szama,Alapterulet,Ar,Berendezett")] Alberlet alberlet)
+        public async Task<ActionResult> Create(Alberlet model)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                db.Alberletek.Add(alberlet);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                return View(model);
             }
-
-            return View(alberlet);
+            var user = UserManager.FindById(User.Identity.GetUserId());
+            var ujalberlet = new Alberlet(model.Cim, model.Szobak_szama, model.Emelet, model.Mosdok_szama, model.Alapterulet, model.Ar, model.Berendezett, user);
+            user.Hirdetesek.Add(ujalberlet);
+            UserManager.Update(user);
+            using (var context = new ApplicationDbContext())
+            {
+                context.SaveChanges();
+            }
+            return RedirectToAction("Index", new { Message = "Hirdetés feladva!" });
         }
 
         // GET: SajatAlberletek/Edit/5
@@ -93,6 +158,8 @@ namespace AlberletKereso.Controllers
             }
             return View(alberlet);
         }
+
+
 
         // POST: SajatAlberletek/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
