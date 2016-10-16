@@ -108,33 +108,6 @@ namespace AlberletKereso.Controllers
         }
 
         //
-        // GET: /Manage/UjAlberlet
-        public ActionResult UjAlberlet()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/UjAlberlet
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UjAlberlet(Alberlet model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var user = UserManager.FindById(User.Identity.GetUserId());
-            var ujalberlet = new Alberlet(model.Cim, model.Szobak_szama, model.Emelet, model.Mosdok_szama, model.Alapterulet, model.Ar, model.Berendezett, user);
-            user.Hirdetesek.Add(ujalberlet);
-            UserManager.Update(user);
-            using (var context = new ApplicationDbContext()) {
-                context.SaveChanges();
-            }
-            return RedirectToAction("Index", new { Message = "Hirdetés feladva!" });
-        }
-
-        //
         // POST: /Manage/AddPhoneNumber
         [HttpPost]
         [ValidateAntiForgeryToken]

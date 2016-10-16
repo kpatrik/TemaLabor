@@ -39,6 +39,28 @@ namespace AlberletKereso.Controllers
 
             return View(alberletek.ToList());
         }
+        public ActionResult KepNezegeto(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Alberlet alberlet = db.Alberletek.Find(id);
+            if (alberlet == null)
+            {
+                return HttpNotFound();
+            }
+            var Kepek = from k in db.Keps
+                        where k.Alberlet.AlberletId == id
+                        select k;
+
+            return View(Kepek.ToList());
+
+        }
+        public ActionResult KepNezegeto()
+        {
+            return View();
+        }
 
         // GET: Alberlets/Details/5
         public ActionResult Details(int? id)
