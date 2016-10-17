@@ -387,7 +387,7 @@ namespace AlberletKereso.Controllers
 
         //
         // POST: /Account/LogOff
-        [HttpPost]
+        [HttpPost, ActionName("Kijelentkezés")]
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {

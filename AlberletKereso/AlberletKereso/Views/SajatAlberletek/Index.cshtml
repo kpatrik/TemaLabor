@@ -1,13 +1,19 @@
 ﻿@model IEnumerable<AlberletKereso.Models.Alberlet>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Saját albérletek";
 }
 
-<h2>Index</h2>
+<style>
+    td {
+        vertical-align: central;
+    }
+</style>
+
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Új hirdetés feladása", "Create")
 </p>
 <table class="table">
     <tr>
@@ -40,7 +46,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td style="align-items:center">
             @Html.ActionLink("Képek", "KepNezegeto", new { id = item.AlberletId })
         </td>
         <td>
@@ -66,9 +72,9 @@
         </td>
         <td>
             @Html.ActionLink("Kép hozzáadás", "KepHozzaadas", new { id = item.AlberletId }) |
-            @Html.ActionLink("Edit", "Edit", new { id=item.AlberletId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.AlberletId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.AlberletId })
+            @Html.ActionLink("Szerkesztés", "Edit", new { id=item.AlberletId }) |
+            @Html.ActionLink("Részletek", "Details", new { id=item.AlberletId }) |
+            @Html.ActionLink("Hirdetés törlése", "Delete", new { id=item.AlberletId })
         </td>
     </tr>
 }
