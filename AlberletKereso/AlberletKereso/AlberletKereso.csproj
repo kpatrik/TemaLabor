@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlberletsController.cs" />
+    <Compile Include="Controllers\FiltersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\SajatAlberletekController.cs" />
@@ -205,6 +206,7 @@
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Alberlet.cs" />
+    <Compile Include="Models\Filter.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\Kep.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -284,6 +286,11 @@
     <Content Include="Views\SajatAlberletek\KepHozzaadas.cshtml" />
     <Content Include="Views\SajatAlberletek\KepNezegeto.cshtml" />
     <Content Include="Views\Alberlets\KepNezegeto.cshtml" />
+    <Content Include="Views\Filters\Create.cshtml" />
+    <Content Include="Views\Filters\Delete.cshtml" />
+    <Content Include="Views\Filters\Details.cshtml" />
+    <Content Include="Views\Filters\Edit.cshtml" />
+    <Content Include="Views\Filters\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\Kepek\" />

@@ -9,6 +9,7 @@ using System.Web;
 
 namespace AlberletKereso.Models
 {
+    
     public class Alberlet
     {
         [Display(Name = "Képek")]

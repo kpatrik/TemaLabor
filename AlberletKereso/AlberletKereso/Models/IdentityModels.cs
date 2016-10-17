@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Collections.Generic;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace AlberletKereso.Models
 {
@@ -12,9 +13,11 @@ namespace AlberletKereso.Models
     {
 
         public ICollection<Alberlet> Hirdetesek { get; set; }
+        public  ICollection<Filter> Filters { get; set; }
 
         public ApplicationUser() : base() {
             Hirdetesek = new List<Alberlet>();
+            Filters = new List<Filter>();
         }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
@@ -31,16 +34,19 @@ namespace AlberletKereso.Models
     {
 
         public DbSet<Alberlet> Alberletek { get; set; }
+        public DbSet<Filter> Filters { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            
         }
 
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
+        
 
         public System.Data.Entity.DbSet<AlberletKereso.Models.Kep> Keps { get; set; }
     }

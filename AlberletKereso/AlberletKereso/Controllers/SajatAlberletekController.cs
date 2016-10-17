@@ -12,12 +12,15 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System.Web.Security;
 using System.Threading.Tasks;
 using System.IO;
+using System.Net.Mail;
 
 namespace AlberletKereso.Controllers
 {
+   
     public class SajatAlberletekController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+       
 
         public SajatAlberletekController()
         {
@@ -137,6 +140,8 @@ namespace AlberletKereso.Controllers
             var ujalberlet = new Alberlet(model.Cim, model.Szobak_szama, model.Emelet, model.Mosdok_szama, model.Alapterulet, model.Ar, model.Berendezett, user);
             user.Hirdetesek.Add(ujalberlet);
             UserManager.Update(user);
+            
+            iterateUsers(ujalberlet);
             using (var context = new ApplicationDbContext())
             {
                 context.SaveChanges();
@@ -170,8 +175,9 @@ namespace AlberletKereso.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(alberlet).State = EntityState.Modified;
-                db.SaveChanges();
+                
+                alberlet.Hirdeto = UserManager.FindById(User.Identity.GetUserId());
+                iterateUsers(alberlet);
                 return RedirectToAction("Index");
             }
             return View(alberlet);
@@ -210,6 +216,53 @@ namespace AlberletKereso.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+        private void iterateUsers(Alberlet albi)
+        {
+           
+            foreach (var ite2 in UserManager.Users)
+            {
+                var filters = from f in db.Filters
+                              where f.feliratkozo.Id == ite2.Id
+                              select f;
+                ite2.Filters = filters.ToList();
+                foreach (Models.Filter item in ite2.Filters)
+                {
+                    if (
+                        (item.Alapterulet==null||item.Alapterulet <= albi.Alapterulet)
+                            && (item.Berendezett==null ||item.Berendezett.Equals(albi.Berendezett) || !item.Berendezett.HasValue)
+                            && (item.Cim==null||item.Cim.Equals(albi.Cim))
+                            && (item.Emelet==null||item.Emelet <= albi.Emelet)
+                            && (item.MaxAr==null||item.MaxAr >= albi.Ar)
+                            && (item.MinAr==null||albi.Ar <= item.MinAr)
+                            && (item.Mosdok_szama==null||item.Mosdok_szama <= albi.Mosdok_szama)
+                            && (item.Szobak_szama==null||item.Szobak_szama <= albi.Szobak_szama)
+                            && ite2.Id !=albi.Hirdeto.Id) { }
+                    sendMail(ite2, albi);
+
+                }
+
+            }
+
+
+         }
+
+        private void sendMail(ApplicationUser user, Alberlet albi)
+        {
+            MailMessage o = new MailMessage("temalabor@hotmail.com", user.Email, "Találat",
+                "Megtaláltuk a neked megfelelő albérletet! \n "+
+                "Az albérlet adatai: \n"+
+                "Cím: " + albi.Cim+"\n"+
+                "Szobák száma: " +albi.Szobak_szama+"\n"+
+                "Emelet: " + albi.Emelet+ "\n"+
+                "Mosdok száma: " +albi.Mosdok_szama+"\n"+
+                "Alapterület: "+ albi.Alapterulet+"\n"+
+                "Ár: "+albi.Ar);
+            NetworkCredential netCred = new NetworkCredential("temalabor@hotmail.com", "valami123");
+            SmtpClient smtpobj = new SmtpClient("smtp.live.com", 587);
+            smtpobj.EnableSsl = true;
+            smtpobj.Credentials = netCred;
+            smtpobj.Send(o);
         }
     }
 }
