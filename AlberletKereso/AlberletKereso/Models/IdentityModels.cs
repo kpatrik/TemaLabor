@@ -37,7 +37,7 @@ namespace AlberletKereso.Models
         public DbSet<Filter> Filters { get; set; }
 
         public ApplicationDbContext()
-            : base("DefaultConnection", throwIfV1Schema: false)
+            : base("ApplicationDbContext", throwIfV1Schema: false)
         {
             
         }
