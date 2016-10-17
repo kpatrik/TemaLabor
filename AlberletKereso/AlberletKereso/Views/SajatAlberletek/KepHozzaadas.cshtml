@@ -4,9 +4,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{ 
+    ViewBag.Title = "Kép hozzáadása";
+}
 
-@using (Html.BeginForm("KepHozzaadas", "SajatAlberletek", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<h1>
+    @ViewBag.Title
+</h1>
+
+@using (Html.BeginForm("Új kép hozzáadása", "SajatAlberletek", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     <input type="file" name="file" />
-    <input type="submit" name="Submit" id="Submit" value="Upload" />
+    <input type="submit" name="Submit" id="Submit" value="Kép feltöltése" />
 }
