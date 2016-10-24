@@ -1,7 +1,18 @@
-﻿
+﻿@model IEnumerable<AlberletKereso.Models.Kep>
+
 @{
-    ViewBag.Title = "KepNezegeto";
+    ViewBag.Title = "Képek az albérletről";
 }
 
-<h2>KepNezegeto</h2>
+<h2>Képek az albérletről</h2>
 
+@foreach (var item in Model)
+{
+
+    <tr>
+        <td>
+            <img src="~/Uploads/@item.FileName" />
+
+        </td>
+    </tr>
+}

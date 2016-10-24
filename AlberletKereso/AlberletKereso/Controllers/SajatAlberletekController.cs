@@ -98,7 +98,7 @@ namespace AlberletKereso.Controllers
 
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         // GET: SajatAlberletek/Details/5
