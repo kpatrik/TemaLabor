@@ -1,0 +1,82 @@
+﻿@model AlberletKereso.Models.Filter
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Filter</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Cim)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Cim)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Szobak_szama)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Szobak_szama)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Emelet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Emelet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Mosdok_szama)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Mosdok_szama)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Alapterulet)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Alapterulet)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MinAr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MinAr)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxAr)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxAr)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Berendezett)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Berendezett)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FilterId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
