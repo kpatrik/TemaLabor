@@ -12,10 +12,10 @@ namespace AlberletKereso.Controllers
 {
     public class AlberletsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Alberlets
-        public ActionResult Index(String search, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
+        public ActionResult Index(String cim, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
         {
             if (maxSzoba ==null) maxSzoba = int.MaxValue;
             if (maxTerulet == null) maxTerulet = int.MaxValue;
@@ -24,38 +24,42 @@ namespace AlberletKereso.Controllers
             if (minTerulet == null) minTerulet = 0;
             if (minAr == null) minAr = 0;
 
-            var alberletek = from a in db.Alberletek
-                             where a.Alapterulet >= minTerulet
-                             where a.Alapterulet <= maxTerulet
-                             where a.Szobak_szama >= minSzoba
-                             where a.Szobak_szama <= maxSzoba
-                             where a.Ar >= minAr
-                             where a.Ar <= maxAr
-                             select a;
-            if (!String.IsNullOrEmpty(search))
-            {
-                alberletek = alberletek.Where(c => c.Cim.Contains(search));
-            }
+            var alberletek = unitOfWork.AlberletRepository.Get();
 
+            if (!String.IsNullOrEmpty(cim))
+            {
+                alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
+                                                                            f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
+                                                                            f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet & f.Cim.Contains("cim")
+                                                                            );
+            }
+            else
+            {
+                alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
+                                                                            f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
+                                                                            f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet);
+            } 
             return View(alberletek.ToList());
         }
+
+
         public ActionResult KepNezegeto(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+       
             if (alberlet == null)
             {
                 return HttpNotFound();
             }
-            var Kepek = from k in db.Keps
-                        where k.Alberlet.AlberletId == id
-                        select k;
+
+            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
 
             return View(Kepek.ToList());
-
         }
         
 
@@ -66,11 +70,14 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+
             if (alberlet == null)
             {
                 return HttpNotFound();
             }
+
             return View(alberlet);
         }
 
@@ -78,10 +85,7 @@ namespace AlberletKereso.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }

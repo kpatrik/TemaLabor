@@ -23,24 +23,19 @@ namespace AlberletKereso.Controllers
     public class SajatAlberletekController : Controller
     {
         //private ApplicationDbContext db;
-       
 
-        public SajatAlberletekController()
-        {
-           
-        }
+
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         //protected ApplicationUserManager UserManager { get; set; }
 
         // GET: SajatAlberletek
         public ActionResult Index()
         {
-            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+         
             var userManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
-            var alberletek = from a in db.Alberletek
-                             where a.Hirdeto.Id == userID
-                             select a;
+            var alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Hirdeto.Id == userID);
 
             return View(alberletek.ToList());
         }
@@ -51,14 +46,14 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+ 
             if (alberlet == null)
             {
                 return HttpNotFound();
             }
-            var Kepek = from k in db.Keps
-                        where k.Alberlet.AlberletId == id
-                        select k;
+            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
 
             return View(Kepek.ToList());
 
@@ -80,9 +75,9 @@ namespace AlberletKereso.Controllers
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-                Alberlet alberlet = db.Alberletek.Find(id);
+                Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
 
-                
+
                 if (alberlet == null)
                 {
                     return HttpNotFound();
@@ -95,7 +90,7 @@ namespace AlberletKereso.Controllers
                     file.SaveAs(path);
                     Kep kep = new Kep(path, fileName, alberlet);
                     alberlet.Kepek.Add(kep);
-                    db.SaveChanges();
+                    unitOfWork.Save();
                 }
 
             }
@@ -110,7 +105,7 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
             if (alberlet == null)
             {
                 return HttpNotFound();
@@ -141,8 +136,8 @@ namespace AlberletKereso.Controllers
             UserManager.Update(user);
             
             iterateUsers(ujalberlet);
-           
-            db.SaveChanges();
+
+            unitOfWork.Save();
             return RedirectToAction("Index", new { Message = "Hirdetés feladva!" });
         }
 
@@ -153,7 +148,7 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
             if (alberlet == null)
             {
                 return HttpNotFound();
@@ -187,7 +182,9 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+
             if (alberlet == null)
             {
                 return HttpNotFound();
@@ -200,9 +197,10 @@ namespace AlberletKereso.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Alberlet alberlet = db.Alberletek.Find(id);
-            db.Alberletek.Remove(alberlet);
-            db.SaveChanges();
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+            unitOfWork.AlberletRepository.Delete(alberlet);
+            unitOfWork.Save();
+   
             return RedirectToAction("Index");
         }
 
@@ -211,6 +209,7 @@ namespace AlberletKereso.Controllers
            
             foreach (var ite2 in UserManager.Users)
             {
+                var filters = 
                 var filters = from f in db.Filters
                               where f.feliratkozo.Id == ite2.Id
                               select f;
