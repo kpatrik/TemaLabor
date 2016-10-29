@@ -26,7 +26,11 @@ namespace AlberletKereso.Controllers
         // GET: Filters
         public ActionResult Index()
         {
-            return View(unitOfWork.FilterRepository.Get(filter => filter.feliratkozo == unitOfWork.UserManager.FindById(User.Identity.GetUserId())));
+
+            var userId = unitOfWork.UserManager.FindById(User.Identity.GetUserId()).Id;
+            var filterek = unitOfWork.FilterRepository.Get(f => f.feliratkozo.Id == userId);
+
+            return View(filterek);
         }
 
         // GET: Filters/Details/5
