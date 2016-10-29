@@ -37,6 +37,7 @@ namespace AlberletKereso.Controllers
         {
             var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
             var userManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+
             var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
             var alberletek = from a in db.Alberletek
                              where a.Hirdeto.Id == userID

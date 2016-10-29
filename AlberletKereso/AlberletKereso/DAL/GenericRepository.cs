@@ -6,8 +6,7 @@ using System.Data.Entity;
 using System.Linq.Expressions;
 using AlberletKereso.Models;
 
-namespace ContosoUniversity.DAL
-{
+
     public class GenericRepository<TEntity> where TEntity : class
     {
         internal ApplicationDbContext context;
@@ -78,4 +77,3 @@ namespace ContosoUniversity.DAL
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
     }
-}
