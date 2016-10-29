@@ -1,18 +1,38 @@
-﻿using AlberletKereso.Models;
+﻿using AlberletKereso;
+using AlberletKereso.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
+using Microsoft.Owin.Host.SystemWeb;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
 
-namespace ContosoUniversity.DAL
-{
-    public class UnitOfWork : IDisposable
+public class UnitOfWork : IDisposable
     {
         private ApplicationDbContext context = new ApplicationDbContext();
         private GenericRepository<Alberlet> alberletRepository;
         private GenericRepository<Filter> filterRepository;
         private GenericRepository<Kep> kepRepository;
         private GenericRepository<ApplicationUser> userRepository;
+        private ApplicationUserManager userManager;
 
-        public GenericRepository<Alberlet> AlberletRepository
-        {
+
+
+    public ApplicationUserManager UserManager {
+
+        get {
+
+            if(userManager == null)
+                userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+
+            return userManager;
+        }
+
+    }
+
+
+    public GenericRepository<Alberlet> AlberletRepository
+    {
             get
             {
 
@@ -88,4 +108,3 @@ namespace ContosoUniversity.DAL
             GC.SuppressFinalize(this);
         }
     }
-}
