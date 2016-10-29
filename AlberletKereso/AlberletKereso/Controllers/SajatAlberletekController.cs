@@ -13,31 +13,30 @@ using System.Web.Security;
 using System.Threading.Tasks;
 using System.IO;
 using System.Net.Mail;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 
 namespace AlberletKereso.Controllers
 {
    
     public class SajatAlberletekController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        //private ApplicationDbContext db;
        
 
         public SajatAlberletekController()
         {
-            this.ApplicationDbContext = new ApplicationDbContext();
-            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
+           
         }
 
-        protected UserManager<ApplicationUser> UserManager { get; set; }
-
-
-        protected ApplicationDbContext ApplicationDbContext { get; set; }
-    
+        //protected ApplicationUserManager UserManager { get; set; }
 
         // GET: SajatAlberletek
         public ActionResult Index()
         {
-
+            var db = HttpContext.GetOwinContext().Get<ApplicationDbContext>();
+            var userManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
             var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
             var alberletek = from a in db.Alberletek
                              where a.Hirdeto.Id == userID
@@ -101,7 +100,7 @@ namespace AlberletKereso.Controllers
 
             }
 
-            return View();
+            return RedirectToAction("Index");
         }
 
         // GET: SajatAlberletek/Details/5
@@ -142,10 +141,8 @@ namespace AlberletKereso.Controllers
             UserManager.Update(user);
             
             iterateUsers(ujalberlet);
-            using (var context = new ApplicationDbContext())
-            {
-                context.SaveChanges();
-            }
+           
+            db.SaveChanges();
             return RedirectToAction("Index", new { Message = "Hirdetés feladva!" });
         }
 
@@ -209,14 +206,6 @@ namespace AlberletKereso.Controllers
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
         private void iterateUsers(Alberlet albi)
         {
            

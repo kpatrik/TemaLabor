@@ -57,10 +57,7 @@ namespace AlberletKereso.Controllers
             return View(Kepek.ToList());
 
         }
-        public ActionResult KepNezegeto()
-        {
-            return View();
-        }
+        
 
         // GET: Alberlets/Details/5
         public ActionResult Details(int? id)
