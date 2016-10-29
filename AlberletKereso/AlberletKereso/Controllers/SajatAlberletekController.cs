@@ -34,6 +34,7 @@ namespace AlberletKereso.Controllers
         {
          
             var userManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
+
             var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
             var alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Hirdeto.Id == userID);
 

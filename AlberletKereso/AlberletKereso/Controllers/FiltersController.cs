@@ -14,23 +14,19 @@ namespace AlberletKereso.Controllers
 {
     public class FiltersController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        protected ApplicationDbContext ApplicationDbContext { get; set; }
-        protected Microsoft.AspNet.Identity.UserManager<ApplicationUser> UserManager { get; set; }
+
+
+        private UnitOfWork unitOfWork = new UnitOfWork();
+
         public FiltersController()
         {
-            this.ApplicationDbContext = new ApplicationDbContext();
-            this.UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(this.ApplicationDbContext));
+
         }
 
         // GET: Filters
         public ActionResult Index()
         {
-            var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
-            var filters = from f in db.Filters
-                          where f.feliratkozo.Id == userID
-                          select f;
-            return View(filters.ToList());
+            return View(unitOfWork.FilterRepository.Get(filter => filter.feliratkozo == unitOfWork.UserManager.FindById(User.Identity.GetUserId())));
         }
 
         // GET: Filters/Details/5
@@ -40,7 +36,7 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Filter filter = db.Filters.Find(id);
+            Models.Filter filter = unitOfWork.FilterRepository.GetByID(id);
             if (filter == null)
             {
                 return HttpNotFound();
@@ -63,15 +59,12 @@ namespace AlberletKereso.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = UserManager.FindById(User.Identity.GetUserId());
+                var user = unitOfWork.UserManager.FindById(User.Identity.GetUserId());
                 var ujszuro = new Models.Filter(filter.Cim, filter.Szobak_szama, filter.Emelet, filter.Mosdok_szama, filter.Alapterulet, filter.MinAr, filter.MaxAr, filter.Berendezett, user);
                 user.Filters.Add(ujszuro);
-                UserManager.Update(user);
-                using (var context = new ApplicationDbContext())
-                {
-                    context.SaveChanges();
-                }
-               
+                unitOfWork.UserManager.Update(user);
+                unitOfWork.Save();
+            
                 return RedirectToAction("Index");
             }
 
@@ -85,7 +78,7 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Filter filter = db.Filters.Find(id);
+            Models.Filter filter = unitOfWork.FilterRepository.GetByID(id);
             if (filter == null)
             {
                 return HttpNotFound();
@@ -102,8 +95,11 @@ namespace AlberletKereso.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(filter).State = EntityState.Modified;
-                db.SaveChanges();
+
+                // db.Entry(filter).State = EntityState.Modified;
+                unitOfWork.FilterRepository.Update(filter);
+                unitOfWork.Save();
+
                 return RedirectToAction("Index");
             }
             return View(filter);
@@ -116,7 +112,7 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Models.Filter filter = db.Filters.Find(id);
+            Models.Filter filter = unitOfWork.FilterRepository.GetByID(id);
             if (filter == null)
             {
                 return HttpNotFound();
@@ -129,9 +125,9 @@ namespace AlberletKereso.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Models.Filter filter = db.Filters.Find(id);
-            db.Filters.Remove(filter);
-            db.SaveChanges();
+            Models.Filter filter = unitOfWork.FilterRepository.GetByID(id);
+            unitOfWork.FilterRepository.Delete(filter);
+            unitOfWork.Save();
             return RedirectToAction("Index");
         }
 
@@ -139,7 +135,7 @@ namespace AlberletKereso.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                unitOfWork.Dispose();
             }
             base.Dispose(disposing);
         }
