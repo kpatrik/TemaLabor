@@ -32,10 +32,6 @@ namespace AlberletKereso.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
-
-        public DbSet<Alberlet> Alberletek { get; set; }
-        public DbSet<Filter> Filters { get; set; }
-
         public ApplicationDbContext()
             : base("ApplicationDbContext", throwIfV1Schema: false)
         {
@@ -47,8 +43,6 @@ namespace AlberletKereso.Models
             return new ApplicationDbContext();
         }
         
-
-        public System.Data.Entity.DbSet<AlberletKereso.Models.Kep> Keps { get; set; }
     }
 
 }
