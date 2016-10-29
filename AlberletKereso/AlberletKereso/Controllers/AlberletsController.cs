@@ -15,7 +15,7 @@ namespace AlberletKereso.Controllers
         private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Alberlets
-        public ActionResult Index(String cim, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
+        public ActionResult Index(String search, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
         {
             if (maxSzoba == null) maxSzoba = int.MaxValue;
             if (maxTerulet == null) maxTerulet = int.MaxValue;
@@ -26,19 +26,15 @@ namespace AlberletKereso.Controllers
 
             var alberletek = unitOfWork.AlberletRepository.Get();
 
-            if (!String.IsNullOrEmpty(cim))
+            alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
+                                                                           f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
+                                                                           f.Ar >= minAr & f.Ar <= maxAr);
+
+            if (!String.IsNullOrEmpty(search))
             {
-                alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
-                                                                            f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
-                                                                            f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet & f.Cim.Contains("cim")
-                                                                            );
+                alberletek = alberletek.Where(s => s.Cim.Contains(search));
             }
-            else
-            {
-                alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
-                                                                            f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
-                                                                            f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet);
-            }
+
             return View(alberletek.ToList());
         }
 

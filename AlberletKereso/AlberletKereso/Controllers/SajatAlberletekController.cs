@@ -32,12 +32,11 @@ namespace AlberletKereso.Controllers
         // GET: SajatAlberletek
         public ActionResult Index()
         {
+            var userId = unitOfWork.UserManager.FindById(User.Identity.GetUserId()).Id;
 
-            var userManager = HttpContext.GetOwinContext().Get<ApplicationUserManager>();
-            var userID = UserManager.FindById(User.Identity.GetUserId()).Id;
-            var alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Hirdeto.Id == userID);
+            var alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Hirdeto.Id == userId);
 
-            return View(alberletek.ToList());
+            return View(alberletek);
         }
 
         public ActionResult KepNezegeto(int? id)
@@ -130,10 +129,10 @@ namespace AlberletKereso.Controllers
             {
                 return View(model);
             }
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = unitOfWork.UserManager.FindById(User.Identity.GetUserId());
             var ujalberlet = new Alberlet(model.Cim, model.Szobak_szama, model.Emelet, model.Mosdok_szama, model.Alapterulet, model.Ar, model.Berendezett, user);
             user.Hirdetesek.Add(ujalberlet);
-            UserManager.Update(user);
+            unitOfWork.UserManager.Update(user);
 
             iterateUsers(ujalberlet);
 
@@ -168,7 +167,7 @@ namespace AlberletKereso.Controllers
             if (ModelState.IsValid)
             {
 
-                alberlet.Hirdeto = UserManager.FindById(User.Identity.GetUserId());
+                alberlet.Hirdeto = unitOfWork.UserManager.FindById(User.Identity.GetUserId());
                 iterateUsers(alberlet);
                 return RedirectToAction("Index");
             }
@@ -207,12 +206,10 @@ namespace AlberletKereso.Controllers
         private void iterateUsers(Alberlet albi)
         {
 
-            foreach (var ite2 in UserManager.Users)
+            foreach (var ite2 in unitOfWork.UserManager.Users)
             {
-                var filters =
-                var filters = from f in db.Filters
-                              where f.feliratkozo.Id == ite2.Id
-                              select f;
+                var filters = unitOfWork.FilterRepository.Get(filter: f => f.feliratkozo.Id == ite2.Id);
+
                 ite2.Filters = filters.ToList();
                 foreach (Models.Filter item in ite2.Filters)
                 {
