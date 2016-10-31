@@ -3,69 +3,143 @@
 @{
     ViewBag.Title = "Részletek";
 }
+<style>
+
+.preview img {
+	border: 4px solid #444;
+	padding: 1px;
+	width: 640px;
+  
+}
+.thumbnails img {
+	height: 80px;
+	border: 4px solid #555;
+	padding: 1px;
+	margin: 0 10px 10px 0;
+}
+
+.thumbnails img:hover {
+	border: 4px solid #00ccff;
+	cursor:pointer;
+}
+.listTable{
+   text-align: left;
+   color: black;
+   border: 4px solid #555;
+   
+}
+.listTable tr:nth-child(2n+1){background-color: #f2f2f2;}
+.listTable tr:hover{
+ background-color: lightgreen;
+}
+.listTable td{
+    white-space: nowrap; 
+    padding: 8px;
+    padding-right: 130px;
+
+
+}
+</style>
 
 <div>
+    
+    
     <h1>Albérlet részletei</h1>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Cim)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Cim)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Szobak_szama)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Szobak_szama)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Emelet)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Emelet)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Mosdok_szama)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Mosdok_szama)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Alapterulet)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Alapterulet)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Ar)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Ar)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Berendezett)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Berendezett)
-        </dd>
-
-    </dl>
+   
 </div>
+<table align="left" cellpadding="10">
+
+    <td width="70%">
+        <table >
+            <td >
+                @if (Model.Kepek.Count != 0)
+                {
+                    <div class="preview" align="center">
+                        <img name="preview" src="~/Uploads/@Model.Kepek.ElementAt(0).FileName" />
+                    </div>
+                    <br />
+                    <div class="thumbnails" align="center">
+                        @for (int i = 0; i < Model.Kepek.Count; i++)
+                        {
+                            <img onmouseover="preview.src=img@(i).src" name="img@(i)" src="~/Uploads/@Model.Kepek.ElementAt(i).FileName" />
+                        }
+                    </div>
+                }
+               @if (Model.Kepek.Count == 0)
+               {
+                <div class="preview" align="center">
+                    <img name="preview"  src="~/Uploads/no_image_thumb.png" />
+                </div>
+                }
+
+                </td>
+        </table>
+    </td>
+    <td valign="top" align="left" width="30%">
+        <div class="listTable">
+            <table>
+                <tr>
+                    <td >
+                        <b>  @Html.DisplayNameFor(model => model.Cim)</b>
+                    </td>
+                    <td >
+                        @Html.DisplayFor(model => model.Cim)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>  @Html.DisplayNameFor(model => model.Szobak_szama)</b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Szobak_szama)
+                    </td>
+                </tr>
+                <tr >
+                    <td>
+                        <b>   @Html.DisplayNameFor(model => model.Emelet)</b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Emelet)
+                    </td>
+                </tr>
+                <tr >
+                    <td>
+                        <b>     @Html.DisplayNameFor(model => model.Ar)</b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Ar)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>       @Html.DisplayNameFor(model => model.Mosdok_szama)</b>
+                    </td>
+                    <td >
+                        @Html.DisplayFor(model => model.Mosdok_szama)
+                    </td>
+                </tr>
+                <tr>
+                    <td >
+                        <b>     @Html.DisplayNameFor(model => model.Berendezett)</b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Berendezett)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <b>    @Html.DisplayNameFor(model => model.Alapterulet)</b>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Alapterulet)
+                    </td>
+                </tr>
+               
+                </table>
+        </div>
+    </td>
+</table>
 <p>
     @Html.ActionLink("Vissza az albérletekhez", "Index")
 </p>

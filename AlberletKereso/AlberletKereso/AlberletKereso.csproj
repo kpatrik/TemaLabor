@@ -235,6 +235,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\AlberlatKereso.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -293,8 +294,6 @@
     <Content Include="Views\SajatAlberletek\Edit.cshtml" />
     <Content Include="Views\SajatAlberletek\Index.cshtml" />
     <Content Include="Views\SajatAlberletek\KepHozzaadas.cshtml" />
-    <Content Include="Views\SajatAlberletek\KepNezegeto.cshtml" />
-    <Content Include="Views\Alberlets\KepNezegeto.cshtml" />
     <Content Include="Views\Filters\Create.cshtml" />
     <Content Include="Views\Filters\Delete.cshtml" />
     <Content Include="Views\Filters\Details.cshtml" />

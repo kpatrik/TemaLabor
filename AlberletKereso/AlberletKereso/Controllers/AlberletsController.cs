@@ -39,25 +39,6 @@ namespace AlberletKereso.Controllers
         }
 
 
-        public ActionResult KepNezegeto(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
-
-            if (alberlet == null)
-            {
-                return HttpNotFound();
-            }
-
-            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
-
-            return View(Kepek.ToList());
-        }
-
 
         // GET: Alberlets/Details/5
         public ActionResult Details(int? id)
@@ -73,7 +54,8 @@ namespace AlberletKereso.Controllers
             {
                 return HttpNotFound();
             }
-
+            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
+            alberlet.Kepek = Kepek.ToList();
             return View(alberlet);
         }
 

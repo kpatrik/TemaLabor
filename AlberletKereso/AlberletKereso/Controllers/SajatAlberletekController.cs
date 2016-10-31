@@ -16,6 +16,7 @@ using System.Net.Mail;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using System.Drawing;
 
 namespace AlberletKereso.Controllers
 {
@@ -39,25 +40,7 @@ namespace AlberletKereso.Controllers
             return View(alberletek);
         }
 
-        public ActionResult KepNezegeto(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-
-            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
-
-            if (alberlet == null)
-            {
-                return HttpNotFound();
-            }
-            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
-
-            return View(Kepek.ToList());
-
-        }
-
+       
         public ActionResult KepHozzaadas()
         {
             return View();
@@ -69,24 +52,30 @@ namespace AlberletKereso.Controllers
             if (Request.Files.Count > 0)
             {
                 var file = Request.Files[0];
-
+               
                 if (id == null)
                 {
                     return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
                 Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
 
-
+               
                 if (alberlet == null)
                 {
                     return HttpNotFound();
                 }
-
-                if (file != null && file.ContentLength > 0)
+                string extension = System.IO.Path.GetExtension(file.FileName);
+                if(extension != ".jpeg" && extension != ".png"&& extension != ".jpg")
+                    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                
+                if (file != null && file.ContentLength > 0 )
                 {
+                    
                     var fileName = Path.GetFileName(file.FileName);
                     var path = Path.Combine(HttpContext.Server.MapPath("~/Uploads/"), fileName);
                     file.SaveAs(path);
+                    Image img = alberlet.resizeImage(640, 480, path);
+                    img.Save(path);
                     Kep kep = new Kep(path, fileName, alberlet);
                     alberlet.Kepek.Add(kep);
                     unitOfWork.Save();
@@ -250,4 +239,6 @@ namespace AlberletKereso.Controllers
             smtpobj.Send(o);
         }
     }
+
+   
 }

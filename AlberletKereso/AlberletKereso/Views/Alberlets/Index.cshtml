@@ -82,9 +82,7 @@
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Kepek)
-        </th>
+       
         <th>
             @Html.DisplayNameFor(model => model.Cim)
         </th>
@@ -111,9 +109,7 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.ActionLink("Képek", "KepNezegeto", new { id = item.AlberletId })
-        </td>
+       
         <td>
             @Html.DisplayFor(modelItem => item.Cim)
         </td>
