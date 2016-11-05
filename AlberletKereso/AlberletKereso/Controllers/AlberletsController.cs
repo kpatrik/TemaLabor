@@ -12,52 +12,33 @@ namespace AlberletKereso.Controllers
 {
     public class AlberletsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private UnitOfWork unitOfWork = new UnitOfWork();
 
         // GET: Alberlets
         public ActionResult Index(String search, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
         {
-            if (maxSzoba ==null) maxSzoba = int.MaxValue;
+            if (maxSzoba == null) maxSzoba = int.MaxValue;
             if (maxTerulet == null) maxTerulet = int.MaxValue;
             if (maxAr == null) maxAr = int.MaxValue;
             if (minSzoba == null) minSzoba = 0;
             if (minTerulet == null) minTerulet = 0;
             if (minAr == null) minAr = 0;
 
-            var alberletek = from a in db.Alberletek
-                             where a.Alapterulet >= minTerulet
-                             where a.Alapterulet <= maxTerulet
-                             where a.Szobak_szama >= minSzoba
-                             where a.Szobak_szama <= maxSzoba
-                             where a.Ar >= minAr
-                             where a.Ar <= maxAr
-                             select a;
+            var alberletek = unitOfWork.AlberletRepository.Get();
+
+            alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
+                                                                           f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
+                                                                           f.Ar >= minAr & f.Ar <= maxAr);
+
             if (!String.IsNullOrEmpty(search))
             {
-                alberletek = alberletek.Where(c => c.Cim.Contains(search));
+                alberletek = alberletek.Where(s => s.Cim.Contains(search));
             }
 
             return View(alberletek.ToList());
         }
-        public ActionResult KepNezegeto(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Alberlet alberlet = db.Alberletek.Find(id);
-            if (alberlet == null)
-            {
-                return HttpNotFound();
-            }
-            var Kepek = from k in db.Keps
-                        where k.Alberlet.AlberletId == id
-                        select k;
 
-            return View(Kepek.ToList());
 
-        }
-        
 
         // GET: Alberlets/Details/5
         public ActionResult Details(int? id)
@@ -66,11 +47,15 @@ namespace AlberletKereso.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Alberlet alberlet = db.Alberletek.Find(id);
+
+            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+
             if (alberlet == null)
             {
                 return HttpNotFound();
             }
+            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
+            alberlet.Kepek = Kepek.ToList();
             return View(alberlet);
         }
 
@@ -78,10 +63,7 @@ namespace AlberletKereso.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                db.Dispose();
-            }
+            unitOfWork.Dispose();
             base.Dispose(disposing);
         }
     }
