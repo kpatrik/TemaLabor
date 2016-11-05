@@ -1,8 +1,7 @@
 ﻿using AlberletKereso.Models;
 using System;
 
-namespace ContosoUniversity.DAL
-{
+
     public class UnitOfWork : IDisposable
     {
         private ApplicationDbContext context = new ApplicationDbContext();
@@ -88,4 +87,3 @@ namespace ContosoUniversity.DAL
             GC.SuppressFinalize(this);
         }
     }
-}
