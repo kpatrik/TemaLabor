@@ -1,12 +1,48 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: lightgrey;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+    background-color: white;
+    border-right: groove thin;
+    border-bottom: groove thin;
+    border-left: groove thin;
+    border-color: white;
+    
+
+}
+
+.header-img {
+
+    width: 100%;
+}
+
+.no-padding{
+    margin-left:-15px;
+    margin-right:-15px;
+
+}
+
+.extra-padding {
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.header-form {
+    text-align:center;
+    font-family: 'Gill Sans';
+    font-style:italic;
+
+      
+}
+
+.hr-style{
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
 }
 
 /* Override the default bootstrap behavior where horizontal description lists 
