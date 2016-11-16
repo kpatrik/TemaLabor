@@ -5,23 +5,51 @@
 }
 
 <style>
-   td, th {
+    .table.results {
+
+    }
+
+    .table.search {
+        line-height: 1.5;
+    }
+
+    td {
        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
        font-size: medium;
-   }
-   .input {
+       border: inherit;
+    }
+
+    .table.results th {
+        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
+        font-size: medium;
+        background: lightgreen;
+    }
+
+    .table.results tr:nth-child(2n+1) {
+        background-color: #f2f2f2;
+    }
+
+    .table.results td {
+        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
+        font-size: medium;
+        border: 1px solid rgba(128, 128, 128, 0.46);
+    }
+
+    .input {
        background-color: white;
        color: black;
-       border: 4px solid, #2a8500;
+       border: 2px solid;
        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
        font-size: medium;
        width: 100%;
        border-radius: 8px;
-   }
-   .input:hover {
-       background-color: #2a8500;
-       color: white;
-   }
+    }
+
+    .input:hover {
+       background-color: lightgreen;
+       border: 2px solid;
+       border-color: black;
+    }
 </style>
 
 <h2>Albérletek keresése</h2>
@@ -29,50 +57,50 @@
 <p>
     @using (Html.BeginForm())
     {
-    <table class="table">
+    <table class="table search" style="width:700px" align="center">
         <tr>
-            <td style="text-align:left">
+            <td style="text-align:left; border-top:0">
                 Cím: 
             </td>
-            <td>
+            <td style="border-top:0">
                 @Html.TextBox("search")
             </td>
         </tr>
         <tr>
-            <td style="text-align:left">
+            <td style="text-align:left; border-top:0">
                 Terület: 
             </td>
-            <td>
+            <td style="border-top:0">
                 @Html.TextBox("minTerulet")
-            </td>
-            <td>
+                 - 
                 @Html.TextBox("maxTerulet")
+                 m<sup>2</sup> között
             </td>
         </tr>
         <tr>
-            <td style="text-align:left">
+            <td style="text-align:left; border-top:0">
                 Ár:
             </td>
-            <td>
+            <td style="border-top:0">
                 @Html.TextBox("minAr")
-            </td>
-            <td>
+                 - 
                 @Html.TextBox("maxAr")
+                 Ft között
             </td>
         </tr>
         <tr>
-            <td style="text-align:left">
+            <td style="text-align:left; border-top:0">
                 Szobák száma:
             </td>
-            <td>
+            <td style="border-top:0">
                 @Html.TextBox("minSzoba")
-            </td>
-            <td>
+                 - 
                 @Html.TextBox("maxSzoba")
+                 között
             </td>
         </tr>
         <tr style="width:100%">
-            <td align="center">
+            <td align="center" colspan="3" style="border-top:0">
                 <input class="input" type="submit" value="Keresés" align="center"/>
             </td>
         </tr>
@@ -80,9 +108,8 @@
     }  
 </p>
 
-<table class="table">
+<table class="table results">
     <tr>
-       
         <th>
             @Html.DisplayNameFor(model => model.Cim)
         </th>
@@ -109,26 +136,25 @@
 
 @foreach (var item in Model) {
     <tr>
-       
-        <td>
+        <td align="left">
             @Html.DisplayFor(modelItem => item.Cim)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Szobak_szama)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Emelet)
+        <td align="center">
+            @Html.DisplayFor(modelItem => item.Emelet).
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Mosdok_szama)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Alapterulet)
+        <td align="right">
+            @Html.DisplayFor(modelItem => item.Alapterulet) m<sup>2</sup>
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Ar)
+        <td align="right">
+            @Html.DisplayFor(modelItem => item.Ar) Ft
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Berendezett)
         </td>
         <td>
