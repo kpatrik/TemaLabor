@@ -31,9 +31,11 @@ namespace AlberletKereso.Services
         public void CreateFilter(string id, Models.Filter filter)
         {
             var user = unitOfWork.UserManager.FindById(id);
-            var ujszuro = new Models.Filter(filter.Cim, filter.Szobak_szama, filter.Emelet, 
-                filter.Mosdok_szama, filter.Alapterulet, filter.MinAr, 
-                filter.MaxAr, filter.Berendezett, user);
+            var ujszuro = new Models.Filter(filter.Cim, filter.Szobak_szama_min, 
+                filter.Szobak_szama_max,
+                filter.Alapterulet_min, filter.Alapterulet_max,
+                filter.MinAr, 
+                filter.MaxAr, user);
             user.Filters.Add(ujszuro);
             unitOfWork.UserManager.Update(user);
             unitOfWork.Save();

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AlberletKereso.Services
@@ -69,7 +70,7 @@ namespace AlberletKereso.Services
             unitOfWork.Save();
         }
 
-        public void IterateUsers(Alberlet alberlet)
+        public async Task IterateUsers(Alberlet alberlet)
         {
             foreach (var ite2 in unitOfWork.UserManager.Users)
             {
@@ -78,17 +79,18 @@ namespace AlberletKereso.Services
                 ite2.Filters = filters.ToList();
                 foreach (Models.Filter item in ite2.Filters)
                 {
-                    if (
-                        (item.Alapterulet == null || item.Alapterulet <= alberlet.Alapterulet)
-                            && (item.Berendezett == null || item.Berendezett.Equals(alberlet.Berendezett) || !item.Berendezett.HasValue)
-                            && (item.Cim == null || item.Cim.Equals(alberlet.Cim))
-                            && (item.Emelet == null || item.Emelet <= alberlet.Emelet)
+                    if (   (item.Alapterulet_min == null || item.Alapterulet_min<= alberlet.Alapterulet)
+                            && (item.Alapterulet_max == null || item.Alapterulet_max >= alberlet.Alapterulet)
+                            && (item.Cim == null || item.Cim.Contains(alberlet.Cim))
                             && (item.MaxAr == null || item.MaxAr >= alberlet.Ar)
-                            && (item.MinAr == null || alberlet.Ar <= item.MinAr)
-                            && (item.Mosdok_szama == null || item.Mosdok_szama <= alberlet.Mosdok_szama)
-                            && (item.Szobak_szama == null || item.Szobak_szama <= alberlet.Szobak_szama)
-                            && ite2.Id != alberlet.Hirdeto.Id) { }
-                    SendMail(ite2, alberlet);
+                            && (item.MinAr == null || alberlet.Ar >= item.MinAr)
+                            && (item.Szobak_szama_max == null || item.Szobak_szama_max >= alberlet.Szobak_szama)
+                            && (item.Szobak_szama_min == null || item.Szobak_szama_min <= alberlet.Szobak_szama)
+                            && ite2.Id != alberlet.Hirdeto.Id)
+                    {
+                        SendMail(ite2, alberlet);
+                    }
+                    
                 }
             }
         }
