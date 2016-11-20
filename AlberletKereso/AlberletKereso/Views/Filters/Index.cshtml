@@ -1,15 +1,37 @@
 ﻿@model IEnumerable<AlberletKereso.Models.Filter>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Szűrők";
 }
+<style>
+    td {
+       font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
+       border: inherit;
+    }
 
-<h2>Index</h2>
+    .table.results th {
+        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
+        font-size: 14px;
+        background: lightgreen;
+    }
+
+    .table.results tr:nth-child(2n+1) {
+        background-color: #f2f2f2;
+    }
+
+    .table.results td {
+        font-family:'Lucida Sans','Lucida Sans Unicode',sans-serif;
+        font-size: 12px;
+        border: 1px solid rgba(128, 128, 128, 0.46);
+    }
+</style>
+
+<h2>Saját szűrőim</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Új szűrő felvétele", "Create")
 </p>
-<table class="table">
+<table class="table results">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Cim)
@@ -40,34 +62,34 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
+        <td align="left">
             @Html.DisplayFor(modelItem => item.Cim)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Szobak_szama)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Emelet)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Mosdok_szama)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Alapterulet)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.MinAr)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.MaxAr)
         </td>
-        <td>
+        <td align="center">
             @Html.DisplayFor(modelItem => item.Berendezett)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.FilterId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.FilterId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.FilterId })
+            @Html.ActionLink("Szerkesztés", "Edit", new { id=item.FilterId }) |
+            @Html.ActionLink("Részletek", "Details", new { id=item.FilterId }) |
+            @Html.ActionLink("Törlés", "Delete", new { id=item.FilterId })
         </td>
     </tr>
 }

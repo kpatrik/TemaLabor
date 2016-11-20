@@ -219,6 +219,9 @@
     <Compile Include="Models\Kep.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AlberletsService.cs" />
+    <Compile Include="Services\FiltersService.cs" />
+    <Compile Include="Services\SajatAlberletekService.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>

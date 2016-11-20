@@ -117,8 +117,5 @@ namespace AlberletKereso.Models
             imgPhoto.Dispose();
             return bmPhoto;
         }
-
-       
     }
-   
 }

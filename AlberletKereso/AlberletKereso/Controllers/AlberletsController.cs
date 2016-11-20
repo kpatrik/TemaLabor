@@ -17,23 +17,16 @@ namespace AlberletKereso.Controllers
         // GET: Alberlets
         public ActionResult Index(String search, int? minSzoba, int? maxSzoba, int? minTerulet, int? maxTerulet, int? minAr, int? maxAr)
         {
-            if (maxSzoba == null) maxSzoba = int.MaxValue;
-            if (maxTerulet == null) maxTerulet = int.MaxValue;
-            if (maxAr == null) maxAr = int.MaxValue;
-            if (minSzoba == null) minSzoba = 0;
-            if (minTerulet == null) minTerulet = 0;
-            if (minAr == null) minAr = 0;
+            Services.AlberletsService alberletsService = new Services.AlberletsService(unitOfWork);
 
-            var alberletek = unitOfWork.AlberletRepository.Get();
+            minSzoba = alberletsService.DefineMinSzoba(minSzoba);
+            maxSzoba = alberletsService.DefineMaxSzoba(maxSzoba);
+            minTerulet = alberletsService.DefineMinTerulet(minTerulet);
+            maxTerulet = alberletsService.DefineMaxTerulet(maxTerulet);
+            minAr = alberletsService.DefineMinAr(minAr);
+            maxAr = alberletsService.DefineMaxAr(maxAr);
 
-            alberletek = unitOfWork.AlberletRepository.Get(filter: f => f.Alapterulet >= minTerulet & f.Alapterulet <= maxTerulet &
-                                                                           f.Szobak_szama >= minSzoba & f.Szobak_szama <= maxSzoba &
-                                                                           f.Ar >= minAr & f.Ar <= maxAr);
-
-            if (!String.IsNullOrEmpty(search))
-            {
-                alberletek = alberletek.Where(s => s.Cim.Contains(search));
-            }
+            var alberletek = alberletsService.GetAlberlets(search, minSzoba, maxSzoba, minTerulet, maxTerulet, minAr, maxAr);
 
             return View(alberletek.ToList());
         }
@@ -43,19 +36,16 @@ namespace AlberletKereso.Controllers
         // GET: Alberlets/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            Services.AlberletsService alberletsService = new Services.AlberletsService(unitOfWork);
 
-            Alberlet alberlet = unitOfWork.AlberletRepository.GetByID(id);
+            if (alberletsService.CheckID(id)) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            if (alberlet == null)
-            {
-                return HttpNotFound();
-            }
-            var Kepek = unitOfWork.KepRepository.Get(filter: f => f.Alberlet.AlberletId == id);
-            alberlet.Kepek = Kepek.ToList();
+            Alberlet alberlet = alberletsService.GetAlberlet(id);
+
+            if (alberletsService.CheckAlberlet(alberlet)) return HttpNotFound();
+
+            alberlet.Kepek = alberletsService.GetKepek((int)id).ToList();
+
             return View(alberlet);
         }
 
