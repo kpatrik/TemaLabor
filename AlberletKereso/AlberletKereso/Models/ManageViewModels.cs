@@ -28,7 +28,7 @@ namespace AlberletKereso.Models
     public class SetPasswordViewModel
     {
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "A jelszónak legalább {2} karakter hosszúnak kell lennie!", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Új jelszó")]
         public string NewPassword { get; set; }
@@ -47,7 +47,7 @@ namespace AlberletKereso.Models
         public string OldPassword { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "A jelszónak legalább {2} karakter hosszúnak kell lennie!", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Új jelszó")]
         public string NewPassword { get; set; }
