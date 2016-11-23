@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using AlberletKereso.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Threading.Tasks;
 
 namespace AlberletKereso.Controllers
 {
@@ -55,7 +56,7 @@ namespace AlberletKereso.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FilterId,Cim,Szobak_szama,Emelet,Mosdok_szama,Alapterulet,MinAr,MaxAr,Berendezett")] Models.Filter filter)
+        public async Task<ActionResult> Create(Models.Filter filter)
         {
             Services.FiltersService filtersService = new Services.FiltersService(unitOfWork);
 
@@ -63,7 +64,7 @@ namespace AlberletKereso.Controllers
             {
                 filtersService.CreateFilter(User.Identity.GetUserId(), filter);
             
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", new { Message = "Filter elkészítve!" });
             }
 
             return View(filter);
@@ -91,7 +92,7 @@ namespace AlberletKereso.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FilterId,Cim,Szobak_szama,Emelet,Mosdok_szama,Alapterulet,MinAr,MaxAr,Berendezett")] Models.Filter filter)
+        public ActionResult Edit([Bind(Include = "FilterId,Cim,Szobak_szama_min,Szobak_szama_max,Alapterulet_min,Alapterulet_max,MinAr,MaxAr")] Models.Filter filter)
         {
             Services.FiltersService filtersService = new Services.FiltersService(unitOfWork);
 

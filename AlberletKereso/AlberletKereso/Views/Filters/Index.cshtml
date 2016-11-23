@@ -37,16 +37,16 @@
             @Html.DisplayNameFor(model => model.Cim)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Szobak_szama)
+            @Html.DisplayNameFor(model => model.Szobak_szama_min)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Emelet)
+            @Html.DisplayNameFor(model => model.Szobak_szama_max)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Mosdok_szama)
+            @Html.DisplayNameFor(model => model.Alapterulet_min)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Alapterulet)
+            @Html.DisplayNameFor(model => model.Alapterulet_max)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.MinAr)
@@ -54,9 +54,7 @@
         <th>
             @Html.DisplayNameFor(model => model.MaxAr)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Berendezett)
-        </th>
+        
         <th></th>
     </tr>
 
@@ -66,16 +64,16 @@
             @Html.DisplayFor(modelItem => item.Cim)
         </td>
         <td align="center">
-            @Html.DisplayFor(modelItem => item.Szobak_szama)
+            @Html.DisplayFor(modelItem => item.Szobak_szama_min)
         </td>
         <td align="center">
-            @Html.DisplayFor(modelItem => item.Emelet)
+            @Html.DisplayFor(modelItem => item.Szobak_szama_max)
         </td>
         <td align="center">
-            @Html.DisplayFor(modelItem => item.Mosdok_szama)
+            @Html.DisplayFor(modelItem => item.Alapterulet_max)
         </td>
         <td align="center">
-            @Html.DisplayFor(modelItem => item.Alapterulet)
+            @Html.DisplayFor(modelItem => item.Alapterulet_max)
         </td>
         <td align="center">
             @Html.DisplayFor(modelItem => item.MinAr)
@@ -84,7 +82,7 @@
             @Html.DisplayFor(modelItem => item.MaxAr)
         </td>
         <td align="center">
-            @Html.DisplayFor(modelItem => item.Berendezett)
+           
         </td>
         <td>
             @Html.ActionLink("Szerkesztés", "Edit", new { id=item.FilterId }) |
